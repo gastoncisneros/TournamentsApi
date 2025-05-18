@@ -3,7 +3,6 @@ using TournamentsApi.Domain.Models;
 
 public class Round
 {
-    
     public Guid Id { get; set; }
     public Guid TournamentId { get; set; }
     public Tournament Tournament { get; set; } = default!;

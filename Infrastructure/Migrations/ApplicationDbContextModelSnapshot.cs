@@ -124,12 +124,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("TournamentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TournamentId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TournamentId1");
 
                     b.HasIndex("TournamentId", "Number")
                         .IsUnique();
@@ -195,25 +190,18 @@ namespace Infrastructure.Migrations
                     b.Property<TimeOnly?>("TeeTime")
                         .HasColumnType("time");
 
-                    b.Property<int>("TournamentId1")
-                        .HasColumnType("int");
-
                     b.HasKey("TournamentId", "PlayerId");
 
                     b.HasIndex("PlayerId");
-
-                    b.HasIndex("TournamentId1");
 
                     b.ToTable("TournamentPlayers");
                 });
 
             modelBuilder.Entity("TournamentsApi.Domain.Models.Tournament", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CutRule")
                         .IsRequired()
@@ -254,7 +242,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("TournamentsApi.Domain.Models.Tournament", "Tournament")
                         .WithMany("Rounds")
-                        .HasForeignKey("TournamentId1")
+                        .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -284,7 +272,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("TournamentsApi.Domain.Models.Tournament", "Tournament")
                         .WithMany("TournamentPlayers")
-                        .HasForeignKey("TournamentId1")
+                        .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

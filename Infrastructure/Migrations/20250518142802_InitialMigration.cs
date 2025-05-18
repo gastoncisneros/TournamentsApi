@@ -59,8 +59,7 @@ namespace Infrastructure.Migrations
                 name: "Tournaments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -98,7 +97,6 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TournamentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TournamentId1 = table.Column<int>(type: "int", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false)
@@ -107,8 +105,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Rounds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rounds_Tournaments_TournamentId1",
-                        column: x => x.TournamentId1,
+                        name: "FK_Rounds_Tournaments_TournamentId",
+                        column: x => x.TournamentId,
                         principalTable: "Tournaments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -120,7 +118,6 @@ namespace Infrastructure.Migrations
                 {
                     TournamentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TournamentId1 = table.Column<int>(type: "int", nullable: false),
                     TeeTime = table.Column<TimeOnly>(type: "time", nullable: true),
                     StartingHole = table.Column<int>(type: "int", nullable: true),
                     IsAmateur = table.Column<bool>(type: "bit", nullable: false),
@@ -137,8 +134,8 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TournamentPlayers_Tournaments_TournamentId1",
-                        column: x => x.TournamentId1,
+                        name: "FK_TournamentPlayers_Tournaments_TournamentId",
+                        column: x => x.TournamentId,
                         principalTable: "Tournaments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -179,11 +176,6 @@ namespace Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rounds_TournamentId1",
-                table: "Rounds",
-                column: "TournamentId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Scores_RoundId_PlayerId",
                 table: "Scores",
                 columns: new[] { "RoundId", "PlayerId" },
@@ -198,11 +190,6 @@ namespace Infrastructure.Migrations
                 name: "IX_TournamentPlayers_PlayerId",
                 table: "TournamentPlayers",
                 column: "PlayerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TournamentPlayers_TournamentId1",
-                table: "TournamentPlayers",
-                column: "TournamentId1");
         }
 
         /// <inheritdoc />
